@@ -16,6 +16,8 @@ urlpatterns = [
     path("users/", include("easy_pg_backend.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
+    path("pg-admin/", include("pg_admin.urls")),
+    path("customer/", include("customer.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

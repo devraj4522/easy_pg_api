@@ -70,11 +70,15 @@ THIRD_PARTY_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "django_celery_beat",
+    "rest_framework",
+    "rest_framework.authtoken",
 ]
 
 LOCAL_APPS = [
     "easy_pg_backend.users",
     # Your stuff: custom apps go here
+    "customer",
+    "pg_admin",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
