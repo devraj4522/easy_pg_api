@@ -253,6 +253,84 @@ LOGGING = {
     "root": {"level": "INFO", "handlers": ["console"]},
 }
 
+
+if not DEBUG:
+    LOGGING = {
+        "version": 1,
+        "disable_existing_loggers": True,
+        "formatters": {
+            "verbose": {
+                "format": "[%(levelname)s] :: [%(asctime)s] :: %(process)d %(thread)d :: %(pathname)s|%(lineno)s :: %(message)s",
+            }
+        },
+        "handlers": {
+            "console": {
+                "level": "INFO",
+                "formatter": "verbose",
+                "class": "logging.StreamHandler",
+            },
+            "fileInfo": {
+                "level": "INFO",
+                "class": "logging.handlers.TimedRotatingFileHandler",
+                "filename": "logs/request_logs/request.log",
+                "when": "D",  # this specifies the interval
+                "interval": 1,  # defaults to 1, only necessary for other values
+                "backupCount": 30,  # how many backup file to keep, 10 days
+                "formatter": "verbose",
+            },
+            "fileDebug": {
+                "level": "DEBUG",
+                "class": "logging.handlers.TimedRotatingFileHandler",
+                "filename": "logs/api_logs/api.log",
+                "when": "D",  # this specifies the interval
+                "interval": 1,  # defaults to 1, only necessary for other values
+                "backupCount": 30,  # how many backup file to keep, 10 days
+                "formatter": "verbose",
+            },
+            "fileServices": {
+                "level": "ERROR",
+                "class": "logging.handlers.TimedRotatingFileHandler",
+                "filename": "logs/service_logs/service.log",
+                "when": "D",  # this specifies the interval
+                "interval": 1,  # defaults to 1, only necessary for other values
+                "backupCount": 30,  # how many backup file to keep, 10 days
+                "formatter": "verbose",
+            },
+        },
+        "loggers": {
+            "info": {  # root logger
+                "handlers": ["console", "fileInfo"],
+                "level": "INFO",
+                "propagate": False,
+            },
+            "django": {
+                "handlers": ["console", "fileInfo"],
+                "propagate": False,
+                "level": "INFO",
+            },
+            "__main__": {  # if __name__ == '__main__'
+                "handlers": ["console"],
+                "level": "DEBUG",
+                "propagate": False,
+            },
+            "error": {  # error in a file
+                "handlers": ["fileDebug", "console"],
+                "level": "ERROR",
+                "propagate": True,
+            },
+            "django.request": {  # django error
+                "handlers": ["fileDebug", "console"],
+                "level": "ERROR",
+                "propagate": False,
+            },
+            "service": {  # service error
+                "handlers": ["fileServices", "console"],
+                "level": "ERROR",
+                "propagate": False,
+            },
+        },
+    }
+
 # Celery
 # ------------------------------------------------------------------------------
 if USE_TZ:
